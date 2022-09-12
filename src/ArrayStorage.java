@@ -3,29 +3,33 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    private int countOfResume = 0;
 
     void clear() {
         //1-й вариант
         //storage = new Resume[10000];
 
         //2-й вариант
-        for (int i = 0; i < storage.length; i++) {
+        for (int i = 0; i < countOfResume; i++) {
             storage[i] = null;
         }
+        countOfResume = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                return;
-            }
-        }
+        storage[countOfResume] = r;
+        countOfResume++;
+//        for (int i = 0; i < storage.length; i++) {
+//            if (storage[i] == null) {
+//                storage[i] = r;
+//                return;
+//            }
+//        }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].toString().equals(uuid)) {
+        for (int i = 0; i < countOfResume; i++) {
+            if (storage[i].toString().equals(uuid)) {
                 return storage[i];
             }
         }
@@ -33,12 +37,12 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
+        for (int i = 0; i < countOfResume; i++) {
             if (storage[i].toString().equals(uuid)) {
-                for (int j = i; j < storage.length - 1; j++) {
+                for (int j = i; j < countOfResume; j++) {
                     storage[j] = storage[j + 1];
                 }
-                storage[9999] = null;
+                countOfResume--;
             }
             return;
         }
@@ -48,20 +52,14 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] allNotNull = new Resume[size()];
-        for (int i = 0; i < allNotNull.length; i++) {
-            allNotNull[i] = storage[i];
+        Resume[] allResumes = new Resume[size()];
+        for (int i = 0; i < countOfResume; i++) {
+            allResumes[i] = storage[i];
         }
-        return allNotNull;
+        return allResumes;
     }
 
     int size() {
-        int sizeNotNullStorage = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                sizeNotNullStorage++;
-            }
-        }
-        return sizeNotNullStorage;
+        return countOfResume;
     }
 }
